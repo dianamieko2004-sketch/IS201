@@ -1,0 +1,70 @@
+.collaborationbg {
+    background-color: rgb(199, 140, 89);
+}
+.fontcollaboration {
+    font-family: 'Cambria', sans-serif;
+    font-size: xx-large;
+    font-weight: bold;
+    color: rgb(76, 41, 5);
+}
+.fontnav {
+    font-family: 'Cambria', sans-serif;
+    color: rgb(8, 5, 2);
+}
+.nav-link {
+    color: rgb(8, 5, 2);
+}
+.home-background {
+    background-image: url("../images/203397193_10157741895141783_337803263503272143_n.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+}
+.tableau-responsive {
+    margin-top: 1rem;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.translucent-white-box {
+    background-color: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 20px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+}
+
+.about-hero-box {
+    margin-bottom: 2rem;
+    max-width: 980px;
+    padding: 1.75rem 1.5rem;
+}
+
+.sushi-font {
+    font-family: 'Cambria', serif;
+    font-weight: 400;
+    color: rgb(76, 41, 5);
+    text-decoration: underline;
+}
+.sushi-font-secondary
+  {
+      font-family: 'Tahoma', sans-serif;
+      font-weight: 400;
+      color: rgb(7, 4, 1);
+  }
+.sushi-font-third {
+    font-family: 'Cambria', sans-serif;
+    font-weight: 100;
+    color: rgb(78, 4, 45);
+    font-size: smaller;
+}
+
+.collaboration-tab-bold {
+    font-weight: 1000;
+}
+.sushi-font-fourth {
+    font-family: 'Cambria', serif;
+    font-weight: 400;
+    color: rgb(76, 41, 5);
+    font-size: large;
+}
