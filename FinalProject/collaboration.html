@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaboration</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/mystyles.css">
+</head>
+<body>
+
+    <nav>
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="aboutme.html">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="resume.html">Resume</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="collaboration.html">Collaboration</a>
+        </li>
+      </ul>
+    </nav>
+
+    <main class="about-page center-text">
+        <h1>Collaboration</h1>
+        <p>This page is ready for your collaboration content.</p>
+    </main>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:  #ffd9c7;
+      text-align: center;
+      color: #4a2c2a;
+    }
+
+    h1 {
+      margin-top: 20px;
+    }
+
+    p {
+      margin-top: 5px;
+    }
+
+    #gameArea {
+      position: relative;
+      margin: 20px auto;
+      width: 500px;
+      height: 600px;
+      background: #fff;
+      border: 4px solid #d46a6a;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    #player {
+      position: absolute;
+      bottom: 20px;
+      left: 210px;
+      font-size: 50px;
+      width: 80px;
+      text-align: center;
+      user-select: none;
+    }
+
+    .falling {
+      position: absolute;
+      font-size: 36px;
+      user-select: none;
+    }
+
+    #scoreBoard {
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #message {
+      font-size: 20px;
+      margin-top: 10px;
+      min-height: 28px;
+      font-weight: bold;
+    }
+
+    button {
+      margin-top: 12px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background-color: #d46a6a;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #b95454;
+    }
+
+    .instruction-box {
+      background-color: rgba(255, 255, 255, 0.88);
+      border: 2px solid #d46a6a;
+      border-radius: 14px;
+      color: #4c2c2a;
+      font-family: Tahoma, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0.75rem auto 1rem;
+      max-width: 380px;
+      padding: 0.85rem 1rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>🍣 Sushi Catch 🍱</h1>
+  <p>Use the left and right arrow keys to catch sushi. Avoid the fish! 🐟</p>
+  <div class="instruction-box">Use keyboard arrows to move the plate.</div>
+
+  <div id="scoreBoard">Score: 0 | Lives: 3</div>
+  <div id="message"></div>
+
+  <div id="gameArea">
+    <div id="player">🍽️</div>
+  </div>
+
+  <button onclick="startGame()">Start / Restart Game</button>
+
+  <script>
+    const gameArea = document.getElementById("gameArea");
+    const player = document.getElementById("player");
+    const scoreBoard = document.getElementById("scoreBoard");
+    const message = document.getElementById("message");
+
+    let playerX = 210;
+    let score = 0;
+    let lives = 3;
+    let gameRunning = false;
+    let fallInterval;
+    let spawnInterval;
+
+    const goodItems = ["🍣", "🍤", "🍙"];
+    const badItems = ["🐟"];
+
+    document.addEventListener("keydown", (e) => {
+      if (!gameRunning) return;
+
+      if (e.key === "ArrowLeft" && playerX > 0) {
+        playerX -= 25;
+      } else if (e.key === "ArrowRight" && playerX < 420) {
+        playerX += 25;
+      }
+
+      player.style.left = playerX + "px";
+    });
+
+    function updateScoreBoard() {
+      scoreBoard.textContent = `Score: ${score} | Lives: ${lives}`;
+    }
+
+    function createFallingItem() {
+      const item = document.createElement("div");
+      item.classList.add("falling");
+
+      const isBad = Math.random() < 0.25;
+      item.textContent = isBad
+        ? badItems[Math.floor(Math.random() * badItems.length)]
+        : goodItems[Math.floor(Math.random() * goodItems.length)];
+
+      item.dataset.type = isBad ? "bad" : "good";
+      item.style.left = Math.floor(Math.random() * 450) + "px";
+      item.style.top = "0px";
+
+      gameArea.appendChild(item);
+
+      let fallSpeed = 3 + Math.random() * 2;
+
+      const moveItem = setInterval(() => {
+        if (!gameRunning) {
+          clearInterval(moveItem);
+          item.remove();
+          return;
+        }
+
+        let itemTop = parseFloat(item.style.top);
+        itemTop += fallSpeed;
+        item.style.top = itemTop + "px";
+
+        const itemLeft = parseFloat(item.style.left);
+        const playerLeft = playerX;
+        const playerRight = playerX + 80;
+        const itemBottom = itemTop + 36;
+
+        if (
+          itemBottom >= 530 &&
+          itemLeft + 30 >= playerLeft &&
+          itemLeft <= playerRight
+        ) {
+          if (item.dataset.type === "good") {
+            score++;
+            message.textContent = "Nice catch! 🍣";
+          } else {
+            lives--;
+            message.textContent = "Eww! Rotten fish! 🐟";
+          }
+
+          updateScoreBoard();
+          clearInterval(moveItem);
+          item.remove();
+          checkGameOver();
+        } else if (itemTop > 600) {
+          if (item.dataset.type === "good") {
+            lives--;
+            message.textContent = "You missed the sushi!";
+            updateScoreBoard();
+            checkGameOver();
+          }
+          clearInterval(moveItem);
+          item.remove();
+        }
+      }, 20);
+    }
+
+    function checkGameOver() {
+      if (lives <= 0) {
+        gameRunning = false;
+        clearInterval(spawnInterval);
+        message.textContent = `Game Over! Final Score: ${score} 🍱`;
+      }
+    }
+
+    function startGame() {
+      document.querySelectorAll(".falling").forEach(item => item.remove());
+
+      score = 0;
+      lives = 3;
+      playerX = 210;
+      player.style.left = playerX + "px";
+      message.textContent = "Game started!";
+      updateScoreBoard();
+
+      gameRunning = true;
+
+      clearInterval(spawnInterval);
+      spawnInterval = setInterval(createFallingItem, 900);
+    }
+  </script>
+
+</body>
+</html>
